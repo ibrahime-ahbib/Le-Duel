@@ -1,12 +1,9 @@
 package appli;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
-public class Joueur {
+public class Joueur extends Object{
     private final String nom;
     private final Pile pile;
     private final ArrayList<Byte> cartesEnMain;
@@ -38,16 +35,14 @@ public class Joueur {
         }
     }
 
-    //fonction afficher carte en main (format : cartes NORD { 15 20 23 32 41 48 } )
+    @Override
     public String toString()
     {
         StringBuilder affiche = new StringBuilder();  //NORD ^[01] v[60] (m6p52) SUD ^[01] v[60] (m6p52)
 
-            affiche.append(nom).append(" ^[").append(getPile().getCarteSommetAscendante()).append("] v[").append(getPile().
-                    getCarteSommetDescendante()).append("] (m").append(cartesEnMain.size()).append("p").
+            affiche.append(nom).append(" ^[").append(String.format("%02d", getPile().getCarteSommetAscendante())).append("] v[").append(String.format("%02d", getPile().
+                    getCarteSommetDescendante())).append("] (m").append(cartesEnMain.size()).append("p").
                     append(pioche.NombreCartesPioche()).append(")");
-
-
 
         return affiche.toString();
     }
@@ -58,7 +53,8 @@ public class Joueur {
         affiche.append("cartes ").append(nom).append(" { ");
         Collections.sort(cartesEnMain);
         for(byte s : cartesEnMain)
-            affiche.append(s).append(" ");
+            affiche.append(String.format("%02d", s)).append(" ");
+
 
         affiche.append("}");
         return affiche.toString();
@@ -99,7 +95,7 @@ public class Joueur {
     }
 
     public boolean partieGagnee(Joueur joueur2){
-        return pioche.getPileDeCartes().empty() && cartesEnMain.isEmpty() && joueur2.partiePerdue();
+        return (pioche.getPileDeCartes().empty() && cartesEnMain.isEmpty()) || joueur2.partiePerdue();
     }
 
     public boolean partiePerdue(){ return !PeutJouerPartie(); }

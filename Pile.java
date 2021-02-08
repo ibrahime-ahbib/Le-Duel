@@ -9,7 +9,6 @@ public class Pile {
         nbCartes = 58;
         carteSommetDescendante = 60;
         carteSommetAscendante = 1;
-
     }
 
     public byte getCarteSommetAscendante(){

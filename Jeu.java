@@ -23,7 +23,7 @@ public class Jeu
         //1) vérifier que le format est bon <=> charAt(0) && charAt(1) sont des chiffres; charAt(2) == 'v' || '^' && charAt(4) s'il existe == ' ' '
         //2) vérifier que la carte peut être jouée
 
-        String[] cartesJoueesSpilter = cartesAJouees.split(" ");
+        String[] cartesJoueesSpilter = cartesAJouees.split("\\s+");
         ArrayList<Byte> nombresJoues = new ArrayList<>();
         boolean a_joue_adversaire = false;
         int nb_cartes_jouees_pile = 0;
@@ -31,7 +31,7 @@ public class Jeu
 
         for(String s : cartesJoueesSpilter)
         {
-            if(((s.length() == 4 && s.charAt(3) != '’')
+            if(((s.length() == 4 && s.charAt(3) != '\'')
                     || (s.length() != 3 && s.length() != 4)
                     || !Character.isDigit(s.charAt(0))
                     || !Character.isDigit(s.charAt(1))
@@ -42,19 +42,23 @@ public class Jeu
             if(numCarte < 2 || numCarte > 59 || !joueurActif.getCarteEnMain().contains(numCarte))
                 return false;
 
+            for(byte b : nombresJoues)
+                if(b == numCarte)
+                    return false;
+
             //Chaine valide, numéro aussi
             if(s.length() == 4)
             {
                 if(s.charAt(2) == 'v')
                 {
-                    if(numCarte < pile_descendante_joueur_adverse)
+                    if(numCarte <= pile_descendante_joueur_adverse)
                         return false;
                     pile_descendante_joueur_adverse = numCarte;
                     //Pile descendante adverse
                 }
                 else
                 {
-                    if(numCarte > pile_ascendante_joueur_adverse)
+                    if(numCarte >= pile_ascendante_joueur_adverse)
                         return false;
                     pile_ascendante_joueur_adverse = numCarte;
                     //Pile ascendante adverse
@@ -66,7 +70,7 @@ public class Jeu
                 {
                 if (s.charAt(2) == 'v')
                 {
-                    if (numCarte > pile_descendante_joueur && numCarte - 10 != pile_descendante_joueur)
+                    if (numCarte >= pile_descendante_joueur && numCarte - 10 != pile_descendante_joueur)
                         return false;
                     pile_descendante_joueur = numCarte;
                     //Pile descendante du joueur
@@ -74,7 +78,7 @@ public class Jeu
                 else
                 {
 
-                    if (numCarte < pile_ascendante_joueur && numCarte != pile_ascendante_joueur - 10)
+                    if (numCarte <= pile_ascendante_joueur && numCarte != pile_ascendante_joueur - 10)
                         return false;
                     pile_ascendante_joueur = numCarte;
                     //Pile ascendante
@@ -126,11 +130,15 @@ public class Jeu
             }
         }
 
-        if(joueur1.partieGagnee(joueur2)){
+        if(joueur1.partieGagnee(joueur2))
             System.out.println("> NORD a gagné la partie");
-        }
-        else if(joueur2.partieGagnee(joueur1)){
+
+        else if(joueur2.partieGagnee(joueur1))
             System.out.println("> SUD a gagné la partie");
-        }
+
+        System.out.println(joueur1.cartesMain());
+        System.out.println(joueur1);
+        System.out.println(joueur2.cartesMain());
+        System.out.println(joueur2);
     }
 }
