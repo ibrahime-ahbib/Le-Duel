@@ -1,11 +1,36 @@
 package appli;
 
-public class Application {
+import appli.jeu.Jeu;
 
+import java.util.Scanner;
+
+
+public class Application {
     public static void main(String[] args) {
-	    Joueur joueur1 = new Joueur("NORD");
-        Joueur joueur2 = new Joueur("SUD");
-        Jeu jeu = new Jeu(joueur1, joueur2);
-        jeu.lancer();
+        Jeu jeu = new Jeu("NORD", "SUD");
+        Scanner entreeUtilisateur = new Scanner(System.in);
+
+        while(jeu.peutContinuer())
+        {
+            System.out.println(jeu.getPremierJoueur().informationsPlateau());
+            System.out.println(jeu.getSecondJoueur().informationsPlateau());
+            System.out.println(jeu.getJoueurActif().informationsCartesMain());
+
+            System.out.print("> ");
+
+            String cartesJouees = entreeUtilisateur.nextLine();
+
+            while (!jeu.jouerCartes(cartesJouees))
+            {
+                System.out.print("#> ");
+                cartesJouees = entreeUtilisateur.nextLine();
+            }
+            System.out.println(jeu.getInformationsDernierCoupJoue());
+        }
+
+        System.out.println(jeu.getPremierJoueur().informationsPlateau());
+        System.out.println(jeu.getSecondJoueur().informationsPlateau());
+        System.out.println(jeu.getJoueurActif().informationsCartesMain());
+        System.out.println("partie finie, " + jeu.getGagnant() + " a gagné");
     }
 }
