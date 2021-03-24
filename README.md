@@ -29,12 +29,12 @@ else
 ```java
 for (int i = 0; i < 10; ++i) 
 {
-    printf("%d", i * i + i);
+    System.out.println("Indice n°" + i);
 }
 ```
 
 ```java
-int mon_variable = 5;
+byte mon_variable = 5;
 ```
 
 ```java
